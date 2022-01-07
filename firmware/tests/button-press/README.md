@@ -1,0 +1,1 @@
+Make sure your udev rules are ok.  You can use a combo of https://andreasrohner.at/posts/Electronics/How-to-fix-device-permissions-for-the-USBasp-programmer/ and https://stackoverflow.com/questions/5412727/avrisp-mkii-doesnt-work-with-avrdude-on-linux to fix this problem.
