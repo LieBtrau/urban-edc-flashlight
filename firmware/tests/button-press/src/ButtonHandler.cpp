@@ -1,3 +1,15 @@
+/**
+ * @file ButtonHandler.cpp
+ * @author Christoph Tack (you@domain.com)
+ * @brief This file handles everything about the button.  Count key presses and make distinction between short and long presses.
+ * @version 0.1
+ * @date 2022-01-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ * This file handles everything about the button.
+ * It polls the button and returns what event has occurred: nothing, long push, single short push, double push or triple push.
+ */
 #include "ButtonHandler.h"
 
 ButtonHandler::ButtonHandler(byte pinNr) : _pinNr(pinNr)

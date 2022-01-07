@@ -1,3 +1,13 @@
+/**
+ * @file ButtonHandler.h
+ * @author Christoph Tack (you@domain.com)
+ * @brief implementation of the Button Handler
+ * @version 0.1
+ * @date 2022-01-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #pragma once
 
 #include "Bounce2.h"
