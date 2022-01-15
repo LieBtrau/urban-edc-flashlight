@@ -32,3 +32,16 @@
 *.app
 
 info
+firmware/tests/button-press/.vscode/extensions.json
+firmware/tests/button-press/include/README
+firmware/tests/button-press/lib/README
+firmware/tests/button-press/test/README
+firmware/tests/eeprom/.vscode/extensions.json
+firmware/tests/eeprom/include/README
+firmware/tests/eeprom/lib/README
+firmware/tests/eeprom/test/README
+firmware/tests/neopixel/.vscode/extensions.json
+firmware/tests/eeprom_LED/test/README
+firmware/tests/neopixel/include/README
+firmware/tests/neopixel/lib/README
+firmware/tests/neopixel/test/README
