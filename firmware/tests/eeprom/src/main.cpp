@@ -22,11 +22,17 @@ void setup()
 	Serial.println("ready");
 	//EEPROM.write(0, 0xAA); // invalidate EEPROM
 	NonVolatileParameters nvp(0);
+	
 	NonVolatileParameters::LedParameters *lp = nvp.getLedParameters(NonVolatileParameters::COB_ARRAY);
 	showParameters(*lp);
 	lp->hue++;
 	lp->led_brightness++;
 	lp->led_mode = NonVolatileParameters::TRIPLE_FLASH;
+
+	NonVolatileParameters::LED_DEVICE* curent_led = nvp.getSelectedLed();
+	Serial.printf("LED: %d\r\n", *curent_led);
+	*curent_led = (NonVolatileParameters::LED_DEVICE)((*curent_led)+1);
+	Serial.printf("LED: %d\r\n", *curent_led);
 	nvp.store();
 	Serial.println("all stored");
 }

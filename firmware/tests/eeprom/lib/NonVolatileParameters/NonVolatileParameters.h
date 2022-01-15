@@ -30,6 +30,7 @@ public:
 		uint16_t hue = 0; //!< Most LEDs won't have option to change color.  EEPROM is large enough anyway.
 	};
 	LedParameters *getLedParameters(LED_DEVICE led);
+	LED_DEVICE* getSelectedLed();
 
 private:
 	int _address;
@@ -38,5 +39,5 @@ private:
 		LED_DEVICE selected_led = COB_ARRAY;
 		LedParameters led_parameters[MAX_LED];
 	};
-	DeviceParameters _led; //!< Actual object that will be stored in EEPROM
+	DeviceParameters _device_params; //!< Actual object that will be stored in EEPROM
 };

@@ -15,10 +15,10 @@
 
 NonVolatileParameters::NonVolatileParameters(int address) : _address(address)
 {
-    DeviceParameters tempLed;
-    if(EEPROM_readAnything(address, tempLed))
+    DeviceParameters temp_params;
+    if(EEPROM_readAnything(address, temp_params))
     {
-        _led = tempLed;
+        _device_params = temp_params;
         return;
     }
     Serial.println("No valid data in EEPROM");
@@ -26,10 +26,15 @@ NonVolatileParameters::NonVolatileParameters(int address) : _address(address)
 
 void NonVolatileParameters::store() const
 {
-    EEPROM_writeAnything(_address, _led);
+    EEPROM_writeAnything(_address, _device_params);
 }
 
 NonVolatileParameters::LedParameters* NonVolatileParameters::getLedParameters(LED_DEVICE led)
 {
-    return &_led.led_parameters[led];
+    return &_device_params.led_parameters[led];
+}
+
+NonVolatileParameters::LED_DEVICE* NonVolatileParameters::getSelectedLed()
+{
+    return &_device_params.selected_led;
 }
