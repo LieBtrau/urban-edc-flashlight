@@ -45,3 +45,5 @@ firmware/tests/eeprom_LED/test/README
 firmware/tests/neopixel/include/README
 firmware/tests/neopixel/lib/README
 firmware/tests/neopixel/test/README
+firmware/tests/eeprom_LED/include/README
+firmware/tests/eeprom_LED/lib/README
