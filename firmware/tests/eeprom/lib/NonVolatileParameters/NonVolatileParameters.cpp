@@ -21,7 +21,6 @@ NonVolatileParameters::NonVolatileParameters(int address) : _address(address)
         _device_params = temp_params;
         return;
     }
-    Serial.println("No valid data in EEPROM");
 }
 
 void NonVolatileParameters::store() const
