@@ -1,5 +1,6 @@
 #include "Arduino.h"
 #include "NonVolatileParameters.h"
+#include "EEPROM.h"
 
 void showParameters(NonVolatileParameters::LedParameters &lp)
 {
@@ -8,17 +9,18 @@ void showParameters(NonVolatileParameters::LedParameters &lp)
 
 void setup()
 {
-	OSCCAL-=5;//999.178kHz
-    Serial.begin(4800);
-    //Disable Serial RX
-    ACSR &=~(1<<ACIE);
-    ACSR |=~(1<<ACD);
+	OSCCAL -= 5; // 999.178kHz
+	Serial.begin(4800);
+	// Disable Serial RX
+	ACSR &= ~(1 << ACIE);
+	ACSR |= ~(1 << ACD);
 	while (!Serial)
 	{
 		; // wait for serial port to connect. Needed for native USB port only
 	}
 	delay(2000);
 	Serial.println("ready");
+	//EEPROM.write(0, 0xAA); // invalidate EEPROM
 	NonVolatileParameters nvp(0);
 	NonVolatileParameters::LedParameters *lp = nvp.getLedParameters(NonVolatileParameters::COB_ARRAY);
 	showParameters(*lp);
