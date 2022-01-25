@@ -8,31 +8,9 @@ Flasher::~Flasher()
 {
 }
 
-void Flasher::setLedMode(NonVolatileParameters::LED_MODE led_mode)
+void Flasher::setLedMode(byte flash_count)
 {
-    switch (led_mode)
-    {
-    case NonVolatileParameters::CONTINUOUSLY_ON:
-        led_setting.flash_count = 0;
-        led_setting.inter_cycle_time = 0;
-        led_setting.led_off_time = 0;
-        led_setting.led_on_time = -1;
-        break;
-    case NonVolatileParameters::SINGLE_FLASH:
-        led_setting.flash_count = 0;
-        led_setting.inter_cycle_time = 900;
-        led_setting.led_off_time = 100;
-        led_setting.led_on_time = 100;
-        break;
-    case NonVolatileParameters::TRIPLE_FLASH:
-        led_setting.flash_count = 3;
-        led_setting.inter_cycle_time = 500;
-        led_setting.led_off_time = 100;
-        led_setting.led_on_time = 100;
-        break;
-    default:
-        break;
-    }
+    _flash_count = flash_count;
     _flash_state = FLASH_INIT;
 }
 
@@ -41,25 +19,25 @@ void Flasher::loop()
     switch (_flash_state)
     {
     case FLASH_INIT:
-        _flash_state = LED_IS_OFF;
+        _flash_state = WAITING_TO_TURN_ON;
         _timer.expire();
-        _cycleCounter = led_setting.flash_count;
+        _cycleCounter = _flash_count;
         break;
-    case LED_IS_OFF:
+    case WAITING_TO_TURN_ON:
         if (_timer.isExpired())
         {
             if (_turnOn != nullptr)
             {
                 _turnOn();
             }
-            if (led_setting.led_on_time > 0)
+            if (_flash_count > 0)
             {
-                _timer.start(led_setting.led_on_time, AsyncDelay::MILLIS);
-                _flash_state = LED_IS_ON;
+                _timer.start(led_on_time, AsyncDelay::MILLIS);
+                _flash_state = WAITING_TO_TURN_OFF;
             }
         }
         break;
-    case LED_IS_ON:
+    case WAITING_TO_TURN_OFF:
         if (_timer.isExpired())
         {
             if (_turnOff != nullptr)
@@ -68,13 +46,13 @@ void Flasher::loop()
             }
             if (_cycleCounter > 0 && --_cycleCounter > 0)
             {
-                _timer.start(led_setting.led_off_time, AsyncDelay::MILLIS);
-                _flash_state = LED_IS_OFF;
+                _timer.start(led_off_time, AsyncDelay::MILLIS);
+                _flash_state = WAITING_TO_TURN_ON;
             }
             else
             {
                 _flash_state = FLASH_INTERCYCLE;
-                _timer.start(led_setting.inter_cycle_time, AsyncDelay::MILLIS);
+                _timer.start(inter_cycle_time, AsyncDelay::MILLIS);
             }
         }
         break;
