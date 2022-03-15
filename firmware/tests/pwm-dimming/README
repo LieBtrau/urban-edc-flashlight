@@ -1,0 +1,1 @@
+PWM-dimming probably only works on hardware PWM-pins: PIN_PA5 & PIN_PA6
