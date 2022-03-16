@@ -10,17 +10,16 @@
 #include <Arduino.h>
 #include "Flasher.h"
 
-const byte LED_PIN = PIN_B0;
 Flasher flasher;
 
 void led_on()
 {
-	digitalWrite(LED_PIN, HIGH);
+	digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void led_off()
 {
-	digitalWrite(LED_PIN, LOW);
+	digitalWrite(LED_BUILTIN, LOW);
 }
 
 void setup()
@@ -37,10 +36,10 @@ void setup()
 	// delay(2000);
 	// Serial.println("ready");
 
-	pinMode(LED_PIN, OUTPUT);
+	pinMode(LED_BUILTIN, OUTPUT);
 	flasher.setTurnOffHandler(led_off);
 	flasher.setTurnOnHandler(led_on);
-	flasher.setLedMode(0);
+	flasher.setLedMode(3);
 }
 
 void loop()
