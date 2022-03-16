@@ -19,12 +19,14 @@ WS2812B_LedHandler::WS2812B_LedHandler(byte &brightness, uint16_t &hue, byte led
 bool WS2812B_LedHandler::increaseBrightness()
 {
     *_brightness = (MAX_BRIGHTNESS - *_brightness > BRIGHTNESS_INCREASE_STEP) ? *_brightness + BRIGHTNESS_INCREASE_STEP : MAX_BRIGHTNESS;
+    turnOn();
     return *_brightness != MAX_BRIGHTNESS;
 }
 
 void WS2812B_LedHandler::setMinimumBrightness()
 {
     *_brightness = MIN_BRIGHTNESS;
+    turnOn();
 }
 
 void WS2812B_LedHandler::turnOn()

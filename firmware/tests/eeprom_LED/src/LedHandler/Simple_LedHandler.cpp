@@ -13,13 +13,15 @@ Simple_LedHandler::Simple_LedHandler(byte &brightnessLevel, byte enablePin, byte
 
 bool Simple_LedHandler::increaseBrightness()
 {
-    *_brightness = (*_brightness) < (sizeof(brightnessLevels) - 1) ? (*_brightness) + 1 : 0;
+    *_brightness = (*_brightness) < (sizeof(brightnessLevels) - 1) ? (*_brightness) + 1 : (sizeof(brightnessLevels) - 1);
+    turnOn();
     return *_brightness != sizeof(brightnessLevels) - 1;
 }
 
 void Simple_LedHandler::setMinimumBrightness()
 {
     *_brightness = 0;
+    turnOn();
 }
 
 void Simple_LedHandler::turnOn()

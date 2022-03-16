@@ -44,10 +44,19 @@ void LED_Controller::showNextLed()
 	byte selected_led = *_current_LED;
 	selected_led = selected_led < NonVolatileParameters::MAX_LED - 1 ? selected_led + 1 : NonVolatileParameters::COB_ARRAY;
 	*_current_LED = (NonVolatileParameters::LED_DEVICE)selected_led;
-	Serial.println(*_current_LED, DEC);
 
 	if (_ledCollection[*_current_LED] != nullptr)
 	{
 		_ledCollection[*_current_LED]->turnOn();
 	}
+}
+
+bool LED_Controller::increaseBrightness()
+{
+	return _ledCollection[*_current_LED]->increaseBrightness();
+}
+
+void LED_Controller::setMinimumBrightness()
+{
+	return _ledCollection[*_current_LED]->setMinimumBrightness();
 }

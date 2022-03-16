@@ -29,4 +29,9 @@ void loop()
 {
 	led_ctrl.showNextLed();
 	delay(1000);
+	if(!led_ctrl.increaseBrightness())
+	{
+		led_ctrl.setMinimumBrightness();
+	}
+	delay(1000);
 }
