@@ -10,7 +10,6 @@ public:
 		COB_ARRAY,
 		UV_LED,
 		RGB_LED,
-		LUXEON_LED,
 		MAX_LED
 	} LED_DEVICE;
 	typedef enum

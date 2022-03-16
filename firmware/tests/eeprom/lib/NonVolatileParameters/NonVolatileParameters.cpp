@@ -6,9 +6,9 @@
  * anything checks the validity of the data stored in EEPROM using a 16-bit CRC.
  * @version 0.1
  * @date 2022-01-13
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 #include "NonVolatileParameters.h"
 #include "EEPROMAnything.h"
@@ -16,7 +16,7 @@
 NonVolatileParameters::NonVolatileParameters(int address) : _address(address)
 {
     DeviceParameters temp_params;
-    if(EEPROM_readAnything(address, temp_params))
+    if (EEPROM_readAnything(address, temp_params))
     {
         _device_params = temp_params;
         return;
@@ -28,12 +28,16 @@ void NonVolatileParameters::store() const
     EEPROM_writeAnything(_address, _device_params);
 }
 
-NonVolatileParameters::LedParameters* NonVolatileParameters::getLedParameters(LED_DEVICE led)
+NonVolatileParameters::LedParameters *NonVolatileParameters::getLedParameters(LED_DEVICE led)
 {
     return &_device_params.led_parameters[led];
 }
 
-NonVolatileParameters::LED_DEVICE* NonVolatileParameters::getSelectedLed()
+NonVolatileParameters::LED_DEVICE *NonVolatileParameters::getSelectedLed()
 {
+    if (_device_params.selected_led >= MAX_LED)
+    {
+        _device_params.selected_led = COB_ARRAY;
+    }
     return &_device_params.selected_led;
 }

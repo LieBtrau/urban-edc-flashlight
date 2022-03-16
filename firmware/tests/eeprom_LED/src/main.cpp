@@ -21,8 +21,8 @@ void initSerialPort()
 
 void setup()
 {
-	// initSerialPort();
-	// Serial.println("ready");
+	initSerialPort();
+	Serial.println("ready");
 }
 
 void loop()
