@@ -21,11 +21,11 @@ LED_Controller::LED_Controller(NonVolatileParameters &nvp)
 
 	// COB-array instantiation
 	lp = nvp.getLedParameters(NonVolatileParameters::COB_ARRAY);
-	_ledCollection[NonVolatileParameters::COB_ARRAY] = new Simple_LedHandler(lp->led_brightness, PIN_PA5);
+	_ledCollection[NonVolatileParameters::COB_ARRAY] = new Simple_LedHandler(lp->led_brightness, PIN_PB0, PIN_PA5);
 
 	// UV-LED instantiation
 	lp = nvp.getLedParameters(NonVolatileParameters::UV_LED);
-	_ledCollection[NonVolatileParameters::UV_LED] = new Simple_LedHandler(lp->led_brightness, PIN_PA6);
+	_ledCollection[NonVolatileParameters::UV_LED] = new Simple_LedHandler(lp->led_brightness, PIN_PB0, PIN_PA6);
 
 	// RGB-LED instantiation
 	lp = nvp.getLedParameters(NonVolatileParameters::RGB_LED);
