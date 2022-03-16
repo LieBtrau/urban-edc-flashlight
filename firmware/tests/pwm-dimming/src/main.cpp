@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-const byte LED_PWM = PIN_PA6;
+const byte LED_PWM = PIN_PA6;//works on PWM-pins only: PIN_PA5, PIN_PA6, PIN_PA7
 
 void initSerialPort()
 {
