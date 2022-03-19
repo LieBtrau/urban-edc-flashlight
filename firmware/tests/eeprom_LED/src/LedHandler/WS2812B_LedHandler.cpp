@@ -1,6 +1,6 @@
 #include "WS2812B_LedHandler.h"
 
-WS2812B_LedHandler::WS2812B_LedHandler(Adafruit_NeoPixel &pixel, byte &brightness, uint16_t &hue) : LedHandler(brightness),
+WS2812B_LedHandler::WS2812B_LedHandler(Adafruit_NeoPixel &pixel, byte &brightness, uint16_t hue) : LedHandler(brightness),
                                                                                                     _pixels(&pixel),
                                                                                                     _hue(hue)
 {

@@ -25,7 +25,7 @@ LED_Controller::LED_Controller(NonVolatileParameters &nvp)
 
 	// RGB-LED instantiation
 	lp = nvp.getLedParameters(NonVolatileParameters::RGB_LED);
-	_ledRgb = WS2812B_LedHandler(_pixels, lp->led_brightness, lp->hue);
+	_ledRgb = WS2812B_LedHandler(_pixels, lp->led_brightness, 0);
 
 _selected_LED_index = nvp.getSelectedLed();
 	switch (*_selected_LED_index)

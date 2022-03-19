@@ -26,7 +26,6 @@ public:
 	{
 		LED_MODE led_mode = CONTINUOUSLY_ON;
 		byte led_brightness = 0;
-		uint16_t hue = 0; //!< Most LEDs won't have option to change color.  EEPROM is large enough anyway.
 	};
 	LedParameters *getLedParameters(LED_DEVICE led);
 	LED_DEVICE* getSelectedLed();
