@@ -16,32 +16,31 @@ LED_Controller::LED_Controller(NonVolatileParameters &nvp)
 	_pixels = Adafruit_NeoPixel(1, PIN_PB1, NEO_GRB + NEO_KHZ800);
 
 	// COB-array instantiation
-	lp = nvp.getLedParameters(NonVolatileParameters::COB_ARRAY);
-	_ledCob = Simple_LedHandler(lp->led_brightness, PIN_PB0, PIN_PA5);
+	lp = nvp.getLedParameters(0);
+	_ledCob.set(0, _ledUv, lp->led_brightness, PIN_PB0, PIN_PA5);
 
 	// UV-LED instantiation
-	lp = nvp.getLedParameters(NonVolatileParameters::UV_LED);
-	_ledUv = Simple_LedHandler(lp->led_brightness, PIN_PB0, PIN_PA6);
+	lp = nvp.getLedParameters(1);
+	_ledUv.set(1, _ledRgbRed, lp->led_brightness, PIN_PB0, PIN_PA6);
 
-	// RGB-LED instantiation
-	lp = nvp.getLedParameters(NonVolatileParameters::RGB_LED);
-	_ledRgb = WS2812B_LedHandler(_pixels, lp->led_brightness, 0);
+	// RGB-LED Red instantiation
+	lp = nvp.getLedParameters(2);
+	_ledRgbRed.set(2, _ledRgbGreen, lp->led_brightness, _pixels, 0);
 
-_selected_LED_index = nvp.getSelectedLed();
-	switch (*_selected_LED_index)
+	// RGB-LED Green instantiation
+	lp = nvp.getLedParameters(3);
+	_ledRgbGreen.set(3, _ledCob, lp->led_brightness, _pixels, 21845);//=65536/3
+
+	_selected_LED = &_ledCob;
+	while (_selected_LED->getId() != *nvp.getSelectedLed())
 	{
-	case NonVolatileParameters::COB_ARRAY:
-	default:
-		_selected_LED = &_ledCob;
-		break;
-		;
-	case NonVolatileParameters::UV_LED:
-		_selected_LED = &_ledUv;
-		break;
-	case NonVolatileParameters::RGB_LED:
-		_selected_LED = &_ledRgb;
-		break;
-	};
+		_selected_LED = _selected_LED->getNextLed();
+		if (_selected_LED == &_ledCob)
+		{
+			// we've had all LEDs and found no match
+			break;
+		}
+	}
 }
 
 void LED_Controller::begin()
@@ -53,29 +52,8 @@ void LED_Controller::showNextLed()
 {
 	_selected_LED->turnOff();
 
-	//This could have been implemented using a linked list.
-	if (_selected_LED == &_ledCob)
-	{
-		_selected_LED = &_ledUv;
-		//Updating LED index to keep RAM-copy of EEPROM data in sync.
-		*_selected_LED_index = NonVolatileParameters::UV_LED;
-	}
-	else
-	{
-		if (_selected_LED == &_ledUv)
-		{
-			_selected_LED = &_ledRgb;
-			*_selected_LED_index = NonVolatileParameters::RGB_LED;
-		}
-		else
-		{
-			if (_selected_LED == &_ledRgb)
-			{
-				_selected_LED = &_ledCob;
-				*_selected_LED_index = NonVolatileParameters::COB_ARRAY;
-			}
-		}
-	}
+	_selected_LED = _selected_LED->getNextLed();
+
 	_selected_LED->turnOn();
 }
 

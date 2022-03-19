@@ -7,13 +7,6 @@ class NonVolatileParameters
 public:
 	typedef enum
 	{
-		COB_ARRAY,
-		UV_LED,
-		RGB_LED,
-		MAX_LED
-	} LED_DEVICE;
-	typedef enum
-	{
 		CONTINUOUSLY_ON,
 		SINGLE_FLASH,
 		TRIPLE_FLASH,
@@ -27,15 +20,16 @@ public:
 		LED_MODE led_mode = CONTINUOUSLY_ON;
 		byte led_brightness = 0;
 	};
-	LedParameters *getLedParameters(LED_DEVICE led);
-	LED_DEVICE* getSelectedLed();
+	LedParameters *getLedParameters(byte id);
+	byte* getSelectedLed();
 
 private:
 	int _address;
+	static const int MAX_NR_OF_LEDS=6;
 	struct DeviceParameters
 	{
-		LED_DEVICE selected_led = COB_ARRAY;
-		LedParameters led_parameters[MAX_LED];
+		byte selected_led = 0;
+		LedParameters led_parameters[MAX_NR_OF_LEDS];
 	};
 	DeviceParameters _device_params; //!< Actual object that will be stored in EEPROM
 };

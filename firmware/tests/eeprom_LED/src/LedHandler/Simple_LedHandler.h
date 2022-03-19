@@ -10,9 +10,8 @@ private:
     byte _pwmPin;
 
 public:
-    Simple_LedHandler(){};
-    Simple_LedHandler(byte &brightnessLevel, byte enablePin, byte pwmPin);
-    void operator=(const Simple_LedHandler &);     // assignment operator
+    Simple_LedHandler();
+    void set(byte id, LedHandler &nextLed, byte &brightnessLevel, byte enablePin, byte pwmPin);
     bool increaseBrightness();
     void setMinimumBrightness();
     void turnOn();

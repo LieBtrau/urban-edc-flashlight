@@ -18,9 +18,8 @@ public:
 
 private:
     LedHandler *_selected_LED = nullptr;
-    NonVolatileParameters::LED_DEVICE *_selected_LED_index = nullptr;
     Adafruit_NeoPixel _pixels;
     // creating the LEDs as members here avoids using dynamically allocating the objects, which doesn't work well on attiny.
     Simple_LedHandler _ledCob, _ledUv;
-    WS2812B_LedHandler _ledRgb;
+    WS2812B_LedHandler _ledRgbRed, _ledRgbGreen;
 };

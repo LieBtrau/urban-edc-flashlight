@@ -1,21 +1,19 @@
 #include "Simple_LedHandler.h"
 
-Simple_LedHandler::Simple_LedHandler(byte &brightnessLevel, byte enablePin, byte pwmPin) : LedHandler(brightnessLevel),
-                                                                                           _enablePin(enablePin),
-                                                                                           _pwmPin(pwmPin)
+Simple_LedHandler::Simple_LedHandler() {}
+
+void Simple_LedHandler::set(byte id, LedHandler &nextLed, byte &brightnessLevel, byte enablePin, byte pwmPin)
 {
+    _id = id;
+    _nextLed = &nextLed;
+    _brightnessLevel = &brightnessLevel;
+    _enablePin = enablePin;
+    _pwmPin = pwmPin;
     if (brightnessLevel >= sizeof(brightnessLevels))
     {
         *_brightnessLevel = sizeof(brightnessLevels) - 1;
     }
     pinMode(_enablePin, OUTPUT);
-}
-
-void Simple_LedHandler::operator=(const Simple_LedHandler &oldobject)
-{
-    _brightnessLevel = oldobject._brightnessLevel;
-    _enablePin = oldobject._enablePin;
-    _pwmPin = oldobject._pwmPin;
 }
 
 bool Simple_LedHandler::increaseBrightness()

@@ -28,16 +28,12 @@ void NonVolatileParameters::store() const
     EEPROM_writeAnything(_address, _device_params);
 }
 
-NonVolatileParameters::LedParameters *NonVolatileParameters::getLedParameters(LED_DEVICE led)
+NonVolatileParameters::LedParameters *NonVolatileParameters::getLedParameters(byte ledindex)
 {
-    return &_device_params.led_parameters[led];
+    return &_device_params.led_parameters[ledindex];
 }
 
-NonVolatileParameters::LED_DEVICE *NonVolatileParameters::getSelectedLed()
+byte *NonVolatileParameters::getSelectedLed()
 {
-    if (_device_params.selected_led >= MAX_LED)
-    {
-        _device_params.selected_led = COB_ARRAY;
-    }
     return &_device_params.selected_led;
 }
