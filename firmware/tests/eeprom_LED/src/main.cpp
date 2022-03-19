@@ -16,6 +16,7 @@ void initSerialPort()
 	{
 		; // wait for serial port to connect. Needed for native USB port only
 	}
+	led_ctrl.begin();
 	delay(2000);
 }
 

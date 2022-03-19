@@ -1,8 +1,8 @@
 #include "WS2812B_LedHandler.h"
 
-WS2812B_LedHandler::WS2812B_LedHandler(byte &brightness, uint16_t &hue, byte ledPin) : LedHandler(brightness),
-                                                                                       _hue(&hue),
-                                                                                       _ledPin(ledPin)
+WS2812B_LedHandler::WS2812B_LedHandler(Adafruit_NeoPixel &pixel, byte &brightness, uint16_t &hue) : LedHandler(brightness),
+                                                                                                    _pixels(&pixel),
+                                                                                                    _hue(hue)
 {
     if (brightness > MAX_BRIGHTNESS)
     {
@@ -12,37 +12,43 @@ WS2812B_LedHandler::WS2812B_LedHandler(byte &brightness, uint16_t &hue, byte led
     {
         brightness = MIN_BRIGHTNESS;
     }
-    _pixels = Adafruit_NeoPixel(1, _ledPin, NEO_GRB + NEO_KHZ800);
-    _pixels.begin();
+}
+
+WS2812B_LedHandler::WS2812B_LedHandler(const WS2812B_LedHandler &oldobject)
+{
+    _brightnessLevel = oldobject._brightnessLevel;
+    _pixels = oldobject._pixels;
+    _hue = oldobject._hue;
+}
+
+void WS2812B_LedHandler::operator=(const WS2812B_LedHandler &oldobject)
+{
+    _brightnessLevel = oldobject._brightnessLevel;
+    _pixels = oldobject._pixels;
+    _hue = oldobject._hue;
 }
 
 bool WS2812B_LedHandler::increaseBrightness()
 {
-    *_brightness = (MAX_BRIGHTNESS - *_brightness > BRIGHTNESS_INCREASE_STEP) ? *_brightness + BRIGHTNESS_INCREASE_STEP : MAX_BRIGHTNESS;
+    *_brightnessLevel = (MAX_BRIGHTNESS - *_brightnessLevel > BRIGHTNESS_INCREASE_STEP) ? *_brightnessLevel + BRIGHTNESS_INCREASE_STEP : MAX_BRIGHTNESS;
     turnOn();
-    return *_brightness != MAX_BRIGHTNESS;
+    return *_brightnessLevel != MAX_BRIGHTNESS;
 }
 
 void WS2812B_LedHandler::setMinimumBrightness()
 {
-    *_brightness = MIN_BRIGHTNESS;
+    *_brightnessLevel = MIN_BRIGHTNESS;
     turnOn();
 }
 
 void WS2812B_LedHandler::turnOn()
 {
-    _pixels.setPixelColor(0, _pixels.ColorHSV(*_hue, DEFAULT_SATURATION, *_brightness));
-    _pixels.show();
+    _pixels->setPixelColor(0, _pixels->ColorHSV(_hue, DEFAULT_SATURATION, *_brightnessLevel));
+    _pixels->show();
 }
 
 void WS2812B_LedHandler::turnOff()
 {
-    _pixels.clear();
-    _pixels.show();
-}
-
-bool WS2812B_LedHandler::setHue(uint16_t hue)
-{
-    *_hue = hue;
-    return true;
+    _pixels->clear();
+    _pixels->show();
 }

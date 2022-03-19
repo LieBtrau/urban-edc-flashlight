@@ -9,54 +9,82 @@
  *
  */
 #include "LED_Controller.h"
-#include "LedHandler/WS2812B_LedHandler.h"
-#include "LedHandler/Simple_LedHandler.h"
 
 LED_Controller::LED_Controller(NonVolatileParameters &nvp)
 {
 	NonVolatileParameters::LedParameters *lp;
-
-	// Global parameters
-	_current_LED = nvp.getSelectedLed();
+	_pixels = Adafruit_NeoPixel(1, PIN_PB1, NEO_GRB + NEO_KHZ800);
 
 	// COB-array instantiation
 	lp = nvp.getLedParameters(NonVolatileParameters::COB_ARRAY);
-	_ledCollection[NonVolatileParameters::COB_ARRAY] = new Simple_LedHandler(lp->led_brightness, PIN_PB0, PIN_PA5);
+	_ledCob = Simple_LedHandler(lp->led_brightness, PIN_PB0, PIN_PA5);
 
 	// UV-LED instantiation
 	lp = nvp.getLedParameters(NonVolatileParameters::UV_LED);
-	_ledCollection[NonVolatileParameters::UV_LED] = new Simple_LedHandler(lp->led_brightness, PIN_PB0, PIN_PA6);
+	_ledUv = Simple_LedHandler(lp->led_brightness, PIN_PB0, PIN_PA6);
 
 	// RGB-LED instantiation
 	lp = nvp.getLedParameters(NonVolatileParameters::RGB_LED);
-	_ledCollection[NonVolatileParameters::RGB_LED] = new WS2812B_LedHandler(lp->led_brightness, lp->hue, PIN_PB1);
+	_ledRgb = WS2812B_LedHandler(_pixels, lp->led_brightness, lp->hue);
 
+_selected_LED_index = nvp.getSelectedLed();
+	switch (*_selected_LED_index)
+	{
+	case NonVolatileParameters::COB_ARRAY:
+	default:
+		_selected_LED = &_ledCob;
+		break;
+		;
+	case NonVolatileParameters::UV_LED:
+		_selected_LED = &_ledUv;
+		break;
+	case NonVolatileParameters::RGB_LED:
+		_selected_LED = &_ledRgb;
+		break;
+	};
+}
+
+void LED_Controller::begin()
+{
+	_pixels.begin();
 }
 
 void LED_Controller::showNextLed()
 {
-	if (_ledCollection[*_current_LED] != nullptr)
-	{
-		_ledCollection[*_current_LED]->turnOff();
-	}
+	_selected_LED->turnOff();
 
-	// Some extra lines to keep the compiler happy.
-	byte selected_led = *_current_LED;
-	selected_led = selected_led < NonVolatileParameters::MAX_LED - 1 ? selected_led + 1 : NonVolatileParameters::COB_ARRAY;
-	*_current_LED = (NonVolatileParameters::LED_DEVICE)selected_led;
-
-	if (_ledCollection[*_current_LED] != nullptr)
+	//This could have been implemented using a linked list.
+	if (_selected_LED == &_ledCob)
 	{
-		_ledCollection[*_current_LED]->turnOn();
+		_selected_LED = &_ledUv;
+		//Updating LED index to keep RAM-copy of EEPROM data in sync.
+		*_selected_LED_index = NonVolatileParameters::UV_LED;
 	}
+	else
+	{
+		if (_selected_LED == &_ledUv)
+		{
+			_selected_LED = &_ledRgb;
+			*_selected_LED_index = NonVolatileParameters::RGB_LED;
+		}
+		else
+		{
+			if (_selected_LED == &_ledRgb)
+			{
+				_selected_LED = &_ledCob;
+				*_selected_LED_index = NonVolatileParameters::COB_ARRAY;
+			}
+		}
+	}
+	_selected_LED->turnOn();
 }
 
 bool LED_Controller::increaseBrightness()
 {
-	return _ledCollection[*_current_LED]->increaseBrightness();
+	return _selected_LED->increaseBrightness();
 }
 
 void LED_Controller::setMinimumBrightness()
 {
-	return _ledCollection[*_current_LED]->setMinimumBrightness();
+	return _selected_LED->setMinimumBrightness();
 }

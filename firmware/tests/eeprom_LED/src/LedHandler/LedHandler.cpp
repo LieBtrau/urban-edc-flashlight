@@ -1,5 +1,5 @@
 #include "LedHandler.h"
 
-LedHandler::LedHandler(byte &brightness) : _brightness(&brightness)
+LedHandler::LedHandler(byte &brightnessLevel) : _brightnessLevel(&brightnessLevel)
 {
 }
