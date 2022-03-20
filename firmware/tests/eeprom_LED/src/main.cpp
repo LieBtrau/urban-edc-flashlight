@@ -24,15 +24,18 @@ void setup()
 {
 	initSerialPort();
 	Serial.println("ready");
+	led_ctrl.showNextLed();
+	nvp.store();
+	while(1);
 }
 
 void loop()
 {
-	led_ctrl.showNextLed();
-	delay(1000);
-	if(!led_ctrl.increaseBrightness())
-	{
-		led_ctrl.setMinimumBrightness();
-	}
-	delay(1000);
+	// led_ctrl.showNextLed();
+	// delay(1000);
+	// if(!led_ctrl.increaseBrightness())
+	// {
+	// 	led_ctrl.setMinimumBrightness();
+	// }
+	// delay(1000);
 }

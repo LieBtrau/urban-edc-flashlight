@@ -18,6 +18,7 @@ public:
 
 private:
     LedHandler *_selected_LED = nullptr;
+    byte* _selectedLedIndex = nullptr;
     Adafruit_NeoPixel _pixels;
     // creating the LEDs as members here avoids using dynamically allocating the objects, which doesn't work well on attiny.
     Simple_LedHandler _ledCob, _ledUv;

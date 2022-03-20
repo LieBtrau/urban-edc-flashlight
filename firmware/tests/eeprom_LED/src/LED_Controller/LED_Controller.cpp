@@ -32,12 +32,14 @@ LED_Controller::LED_Controller(NonVolatileParameters &nvp)
 	_ledRgbGreen.set(3, _ledCob, lp->led_brightness, _pixels, 21845);//=65536/3
 
 	_selected_LED = &_ledCob;
-	while (_selected_LED->getId() != *nvp.getSelectedLed())
+	_selectedLedIndex = nvp.getSelectedLed();
+	while (_selected_LED->getId() != *_selectedLedIndex)
 	{
 		_selected_LED = _selected_LED->getNextLed();
 		if (_selected_LED == &_ledCob)
 		{
 			// we've had all LEDs and found no match
+			_selectedLedIndex = 0;
 			break;
 		}
 	}
@@ -53,6 +55,7 @@ void LED_Controller::showNextLed()
 	_selected_LED->turnOff();
 
 	_selected_LED = _selected_LED->getNextLed();
+	*_selectedLedIndex = _selected_LED->getId();
 
 	_selected_LED->turnOn();
 }
