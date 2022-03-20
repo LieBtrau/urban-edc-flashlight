@@ -18,7 +18,7 @@ class ButtonHandler
 private:
     typedef enum
     {
-        WAITING_FOR_FIRST_PRESS,
+        WAITING_FOR_FIRST_PRESS,    
         WAITING_FOR_BUTTON_RELEASE,
         COUNT_PRESSES
     } BUTTON_STATE;
@@ -32,6 +32,7 @@ public:
     typedef enum
     {
         BT_NO_ACTION,
+        BT_START_OF_PRESS,
         BT_SINGLE_LONG_PUSH,
         BT_SINGLE_SHORT_PUSH,
         BT_DOUBLE_SHORT_PUSH,
