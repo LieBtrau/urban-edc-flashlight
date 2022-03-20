@@ -22,7 +22,7 @@ ButtonHandler::~ButtonHandler()
 
 void ButtonHandler::init()
 {
-    _button_bounce.attach(_pinNr, INPUT);
+    _button_bounce.attach(_pinNr, INPUT_PULLUP);
     _button_bounce.interval(5); // interval in ms
 }
 
@@ -37,6 +37,7 @@ ButtonHandler::BUTTON_ACTION ButtonHandler::loop()
             _button_count_interval.start(1000, AsyncDelay::MILLIS);
             button_push_count = 0;
             button_state = WAITING_FOR_BUTTON_RELEASE;
+            return BT_START_OF_PRESS;
         }
         return BT_NO_ACTION;
     case WAITING_FOR_BUTTON_RELEASE:
