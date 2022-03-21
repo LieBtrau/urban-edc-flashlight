@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "ButtonHandler.h"
 
-const byte PIN_BUTTON = PIN_PB0;
+const byte PIN_BUTTON = PIN_PA0;
 
 ButtonHandler bh(PIN_BUTTON);
 

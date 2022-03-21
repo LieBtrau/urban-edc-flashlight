@@ -7,7 +7,6 @@
  * 
  * @copyright Copyright (c) 2022
  * 
- * This file handles everything about the button.
  * It polls the button and returns what event has occurred: nothing, long push, single short push, double push or triple push.
  */
 #include "ButtonHandler.h"
