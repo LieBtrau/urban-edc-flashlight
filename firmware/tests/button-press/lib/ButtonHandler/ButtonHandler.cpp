@@ -73,7 +73,7 @@ ButtonHandler::BUTTON_ACTION ButtonHandler::loop()
         if (_button_bounce.rose())
         {
             button_state = WAITING_FOR_FIRST_PRESS;
-            return BT_SINGLE_LONG_press;
+            return BT_SINGLE_LONG_PRESS;
         }
         return BT_NO_ACTION;
     default:

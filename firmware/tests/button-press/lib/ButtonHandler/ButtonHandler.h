@@ -34,7 +34,7 @@ public:
     {
         BT_NO_ACTION,
         BT_START_OF_PRESS,
-        BT_SINGLE_LONG_press,
+        BT_SINGLE_LONG_PRESS,
         BT_SINGLE_SHORT_press,
         BT_DOUBLE_SHORT_press,
         BT_TRIPLE_SHORT_press
