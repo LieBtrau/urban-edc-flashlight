@@ -41,6 +41,7 @@ void Going_To_Sleep()
 	sleep_cpu(); 				// activating sleep mode
 
 	//zzz...zzz...zzz...zzz...zzz...zzz...zzz...zzz...zzz...zzz...zzz...zzz...zzz...zzz...
+	//Status of digital outputs will keep its pre-sleep status, so LED will remain ON during sleep.
 
 	// next line of code executed after the interrupt
 	PRR = prr_backup;
@@ -54,8 +55,8 @@ void loop()
 {
 	delay(3000); // wait 5 seconds before going to sleep
 	Serial.println("going to sleep");
-	digitalWrite(LED_BUILTIN, LOW); // turning LED off
+	// digitalWrite(LED_BUILTIN, LOW); // turning LED off
 	delay(1000);				// wait a second to allow the led to be turned off before going to sleep
 	Going_To_Sleep();
-	digitalWrite(LED_BUILTIN, HIGH);
+	// digitalWrite(LED_BUILTIN, HIGH);
 }
