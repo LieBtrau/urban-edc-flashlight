@@ -16,14 +16,14 @@ void initSerialPort()
 	{
 		; // wait for serial port to connect. Needed for native USB port only
 	}
-	led_ctrl.begin();
 	delay(2000);
+	Serial.println("ready");
 }
 
 void setup()
 {
 	initSerialPort();
-	Serial.println("ready");
+	led_ctrl.begin();
 	led_ctrl.showNextLed();
 	nvp.store();
 	while(1);
