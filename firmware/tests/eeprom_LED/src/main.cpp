@@ -1,9 +1,11 @@
 #include "Arduino.h"
 #include "NonVolatileParameters.h"
 #include "LED_Controller/LED_Controller.h"
+#include "AsyncDelay.h"
 
 NonVolatileParameters nvp(0);
 LED_Controller led_ctrl(nvp);
+AsyncDelay _timer;
 
 void initSerialPort()
 {
@@ -24,14 +26,18 @@ void setup()
 {
 	initSerialPort();
 	led_ctrl.begin();
-	led_ctrl.showNextLed();
-	nvp.store();
-	while(1);
+	_timer.start(3000, AsyncDelay::MILLIS);
 }
 
 void loop()
 {
-	// led_ctrl.showNextLed();
+	led_ctrl.loop();
+	if (_timer.isExpired())
+	{
+		_timer.restart();
+		led_ctrl.showNextLed();
+		led_ctrl.nextFlashingMode();
+	}
 	// delay(1000);
 	// if(!led_ctrl.increaseBrightness())
 	// {

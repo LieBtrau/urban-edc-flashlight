@@ -4,7 +4,7 @@ WS2812B_LedHandler::WS2812B_LedHandler()
 {
 }
 
-void WS2812B_LedHandler::set(byte id, LedHandler &nextLed, byte &brightness, Adafruit_NeoPixel &pixel, uint16_t hue)
+void WS2812B_LedHandler::set(byte id, LedHandler &nextLed, byte &brightness, byte& ledMode,Adafruit_NeoPixel &pixel, uint16_t hue)
 
 {
     _id = id;
@@ -20,6 +20,7 @@ void WS2812B_LedHandler::set(byte id, LedHandler &nextLed, byte &brightness, Ada
     {
         brightness = MIN_BRIGHTNESS;
     }
+    LedHandler::set(ledMode);
 }
 
 bool WS2812B_LedHandler::increaseBrightness()

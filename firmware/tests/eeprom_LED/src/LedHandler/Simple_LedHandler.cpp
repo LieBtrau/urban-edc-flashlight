@@ -2,7 +2,7 @@
 
 Simple_LedHandler::Simple_LedHandler() {}
 
-void Simple_LedHandler::set(byte id, LedHandler &nextLed, byte &brightnessLevel, byte enablePin, byte pwmPin)
+void Simple_LedHandler::set(byte id, LedHandler &nextLed, byte &brightnessLevel, byte& ledMode, byte enablePin, byte pwmPin)
 {
     _id = id;
     _nextLed = &nextLed;
@@ -13,6 +13,7 @@ void Simple_LedHandler::set(byte id, LedHandler &nextLed, byte &brightnessLevel,
     {
         *_brightnessLevel = sizeof(brightnessLevels) - 1;
     }
+    LedHandler::set(ledMode);
     pinMode(_enablePin, OUTPUT);
 }
 

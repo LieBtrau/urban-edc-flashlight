@@ -6,6 +6,7 @@
 
 #include "NonVolatileParameters.h"
 #include <Adafruit_NeoPixel.h>
+#include "Flasher.h"
 
 class LED_Controller
 {
@@ -15,12 +16,16 @@ public:
     void showNextLed();
     bool increaseBrightness();
     void setMinimumBrightness();
+    bool nextFlashingMode();
+    void disableFlashing();
+    void loop();
 
 private:
-    LedHandler *_selected_LED = nullptr;
-    byte* _selectedLedIndex = nullptr;
+    const byte MAX_LED_MODE = 3;
+    byte *_selectedLedIndex = nullptr;
     Adafruit_NeoPixel _pixels;
     // creating the LEDs as members here avoids using dynamically allocating the objects, which doesn't work well on attiny.
     Simple_LedHandler _ledCob, _ledUv;
     WS2812B_LedHandler _ledRgbRed, _ledRgbGreen;
+    Flasher _flasher;
 };
