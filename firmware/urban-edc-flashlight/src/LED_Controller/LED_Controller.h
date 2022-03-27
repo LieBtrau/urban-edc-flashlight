@@ -19,7 +19,7 @@ public:
     bool nextFlashingMode();
     void disableFlashing();
     void loop();
-
+    void onOffControl(bool isOn);
 private:
     const byte MAX_LED_MODE = 3;
     byte *_selectedLedIndex = nullptr;
@@ -28,4 +28,5 @@ private:
     Simple_LedHandler _ledCob, _ledUv;
     WS2812B_LedHandler _ledRgbRed, _ledRgbGreen;
     Flasher _flasher;
+    bool _isEnabled = false;
 };

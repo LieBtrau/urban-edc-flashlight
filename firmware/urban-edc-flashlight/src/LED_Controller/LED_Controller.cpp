@@ -9,6 +9,7 @@
  *
  */
 #include "LED_Controller.h"
+#include "pins.h"
 
 static LedHandler *selected_LED = nullptr;
 
@@ -25,15 +26,15 @@ static void turnLedOn()
 LED_Controller::LED_Controller(NonVolatileParameters &nvp)
 {
 	NonVolatileParameters::LedParameters *lp;
-	_pixels = Adafruit_NeoPixel(1, PIN_PB1, NEO_GRB + NEO_KHZ800);
+	_pixels = Adafruit_NeoPixel(1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800);
 
 	// COB-array instantiation
 	lp = nvp.getLedParameters(0);
-	_ledCob.set(0, _ledUv, lp->led_brightness, lp->led_mode, PIN_PB0, PIN_PA5);
+	_ledCob.set(0, _ledUv, lp->led_brightness, lp->led_mode, PIN_EN_PWM, PIN_EN_COB_ARRAY);
 
 	// UV-LED instantiation
 	lp = nvp.getLedParameters(1);
-	_ledUv.set(1, _ledRgbRed, lp->led_brightness, lp->led_mode, PIN_PB0, PIN_PA6);
+	_ledUv.set(1, _ledRgbRed, lp->led_brightness, lp->led_mode, PIN_EN_PWM, PIN_EN_UV_STRING);
 
 	// RGB-LED Red instantiation
 	lp = nvp.getLedParameters(2);
@@ -73,8 +74,6 @@ void LED_Controller::showNextLed()
 	selected_LED = selected_LED->getNextLed();
 	*_selectedLedIndex = selected_LED->getId();
 	_flasher.setLedMode(*selected_LED->getFlashingMode());
-
-	//_selected_LED->turnOn();
 }
 
 bool LED_Controller::increaseBrightness()
@@ -107,5 +106,17 @@ void LED_Controller::disableFlashing()
 
 void LED_Controller::loop()
 {
-	_flasher.loop();
+	if (_isEnabled)
+	{
+		_flasher.loop();
+	}
+}
+
+void LED_Controller::onOffControl(bool isOn)
+{
+	_isEnabled = isOn;
+	if (!_isEnabled)
+	{
+		turnLedOff();
+	}
 }
