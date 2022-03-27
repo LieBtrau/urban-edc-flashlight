@@ -16,10 +16,12 @@ static LedHandler *selected_LED = nullptr;
 static void turnLedOff()
 {
 	selected_LED->turnOff();
+	digitalWrite(PIN_DISABLE_LED, HIGH);
 }
 
 static void turnLedOn()
 {
+	digitalWrite(PIN_DISABLE_LED, LOW);
 	selected_LED->turnOn();
 }
 
@@ -30,11 +32,11 @@ LED_Controller::LED_Controller(NonVolatileParameters &nvp)
 
 	// COB-array instantiation
 	lp = nvp.getLedParameters(0);
-	_ledCob.set(0, _ledUv, lp->led_brightness, lp->led_mode, PIN_EN_PWM, PIN_EN_COB_ARRAY);
+	_ledCob.set(0, _ledUv, lp->led_brightness, lp->led_mode, PIN_EN_COB_ARRAY, PIN_PWM);
 
 	// UV-LED instantiation
 	lp = nvp.getLedParameters(1);
-	_ledUv.set(1, _ledRgbRed, lp->led_brightness, lp->led_mode, PIN_EN_PWM, PIN_EN_UV_STRING);
+	_ledUv.set(1, _ledRgbRed, lp->led_brightness, lp->led_mode, PIN_EN_UV_STRING, PIN_PWM);
 
 	// RGB-LED Red instantiation
 	lp = nvp.getLedParameters(2);
@@ -64,6 +66,8 @@ LED_Controller::LED_Controller(NonVolatileParameters &nvp)
 
 void LED_Controller::begin()
 {
+	pinMode(PIN_DISABLE_LED, OUTPUT);
+	turnLedOn();
 	_pixels.begin();
 	_pixels.clear();
 	_pixels.show();
