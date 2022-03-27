@@ -9,6 +9,7 @@
 NonVolatileParameters nvp(0);
 LED_Controller led_ctrl(nvp);
 ButtonHandler bh(PIN_BUTTON);
+bool firstKeyPressAfterWakeUp = false;
 
 void initSerialPort()
 {
@@ -79,23 +80,27 @@ void loop()
 			// do nothing
 			break;
 		case ButtonHandler::BT_START_OF_PRESS:
-			if (digitalRead(LED_BUILTIN) == LOW)
+			firstKeyPressAfterWakeUp = !led_ctrl.isLedOn();
+			if(firstKeyPressAfterWakeUp)
 			{
 				Serial.println("Turning LED on");
 				led_ctrl.onOffControl(true);
 			}
 			break;
 		case ButtonHandler::BT_SINGLE_SHORT_press:
-			led_ctrl.showNextLed();
+			if (!firstKeyPressAfterWakeUp && led_ctrl.isLedOn())
+			{
+				led_ctrl.showNextLed();
+			}
 			break;
 		case ButtonHandler::BT_DOUBLE_SHORT_press:
-			if (!led_ctrl.increaseBrightness())
+			if (!firstKeyPressAfterWakeUp && !led_ctrl.increaseBrightness())
 			{
 				led_ctrl.setMinimumBrightness();
 			}
 			break;
 		case ButtonHandler::BT_TRIPLE_SHORT_press:
-			if (!led_ctrl.nextFlashingMode())
+			if (!firstKeyPressAfterWakeUp && !led_ctrl.nextFlashingMode())
 			{
 				led_ctrl.disableFlashing();
 			}

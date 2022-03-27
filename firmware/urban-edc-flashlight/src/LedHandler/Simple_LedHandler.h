@@ -5,7 +5,7 @@
 class Simple_LedHandler : public LedHandler
 {
 private:
-   const byte brightnessLevels[6] = {1, 3, 9, 27, 81, 243};
+   const byte brightnessLevels[6] = {1, 4, 16, 64, 255};
     byte _enablePin;
     byte _pwmPin;
 public:

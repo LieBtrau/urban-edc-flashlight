@@ -20,6 +20,7 @@ public:
     void disableFlashing();
     void loop();
     void onOffControl(bool isOn);
+    bool isLedOn() const;
 private:
     const byte MAX_LED_MODE = 3;
     byte *_selectedLedIndex = nullptr;

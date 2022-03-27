@@ -6,9 +6,9 @@
 class WS2812B_LedHandler : public LedHandler
 {
 private:
-    const byte MIN_BRIGHTNESS = 10;
+    const byte MIN_BRIGHTNESS = 1;
     const byte MAX_BRIGHTNESS = 255;
-    const byte BRIGHTNESS_INCREASE_STEP = 10;
+    const byte BRIGHTNESS_INCREASE_STEP = 64;
     const byte DEFAULT_SATURATION = 255;
     Adafruit_NeoPixel *_pixels;
     uint16_t _hue = 0;

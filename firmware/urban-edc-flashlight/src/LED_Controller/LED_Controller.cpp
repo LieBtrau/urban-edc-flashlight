@@ -65,6 +65,8 @@ LED_Controller::LED_Controller(NonVolatileParameters &nvp)
 void LED_Controller::begin()
 {
 	_pixels.begin();
+	_pixels.clear();
+	_pixels.show();
 }
 
 void LED_Controller::showNextLed()
@@ -119,4 +121,9 @@ void LED_Controller::onOffControl(bool isOn)
 	{
 		turnLedOff();
 	}
+}
+
+bool LED_Controller::isLedOn() const
+{
+	return _isEnabled;
 }
