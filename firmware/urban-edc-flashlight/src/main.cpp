@@ -6,6 +6,20 @@
 #include "ButtonHandler.h"
 #include "pins.h"
 
+/**
+ * This is a hack to get the device signature into the .version section of the ELF file
+ * ".signature"-section will be at address 0x00840000
+ */
+#include <avr/signature.h>
+#ifdef COMMIT_HASH
+/**
+ * This is a hack to get the firmware version into the .version section of the ELF file
+ * ".version"-section will be stored just behind the .signature section (at address 0x00840003)
+ */
+static const unsigned char  __attribute__((__section__(".version"), used))  firmwareversion[] = COMMIT_HASH;
+#endif
+
+
 NonVolatileParameters nvp(0);
 LED_Controller led_ctrl(nvp);
 ButtonHandler bh(PIN_BUTTON);
@@ -24,6 +38,7 @@ void initSerialPort()
 	}
 	delay(2000);
 	Serial.println("ready");
+	Serial.print("Firmware version: ");Serial.println((char*)firmwareversion);
 }
 
 void setup()
